@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iki Sushi & Poke · Pedidos por WhatsApp</title>
+<meta property="og:title" content="Iki Sushi & Poke · Pedidos por WhatsApp">
+<meta property="og:description" content="Escoja de la carta y el pedido llega completo a WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--marca:#b91c1c;--tinta:#14110f;--suave:#6f6a64;--linea:#ece9e4;--fondo:#ffffff;--gris:#f6f4f1;--wa:#1faa59}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--fondo);color:var(--tinta);font:15px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block}
+.app{max-width:560px;margin:0 auto;padding-bottom:110px}
+.portada{position:relative;height:190px;background:var(--marca) center/cover no-repeat}
+.portada::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.35))}
+.logo{position:absolute;left:18px;bottom:-34px;width:78px;height:78px;border-radius:50%;border:4px solid #fff;background:#fff center/cover no-repeat;box-shadow:0 6px 18px rgba(0,0,0,.18);z-index:1}
+.info{padding:44px 18px 6px}
+.info h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.info .tipo{margin:4px 0 12px;color:var(--suave);font-size:14px}
+.datos{display:flex;flex-wrap:wrap;gap:8px}
+.datos span{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:999px;background:var(--gris)}
+.datos .abierto{color:#137a3b;background:#e9f7ee}
+.cats{position:sticky;top:0;z-index:5;display:flex;gap:22px;overflow-x:auto;padding:14px 18px 0;background:#fff;border-bottom:1px solid var(--linea);scrollbar-width:none;margin-top:16px}
+.cats a{flex:0 0 auto;padding-bottom:12px;color:var(--suave);font-weight:700;font-size:14px;text-decoration:none;border-bottom:3px solid transparent}
+.cats a:first-child{color:var(--tinta);border-color:var(--marca)}
+section{padding:6px 18px 4px}
+section h2{font-size:19px;font-weight:800;margin:20px 0 4px;letter-spacing:-.01em}
+.plato{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:14px;padding:16px 0;border-bottom:1px solid var(--linea)}
+.plato.sinfoto{grid-template-columns:minmax(0,1fr) auto}
+.plato .n{font-weight:700;font-size:15.5px}
+.plato .d{color:var(--suave);font-size:13px;margin:3px 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.plato .p{font-weight:700;font-size:15px}
+.foto{position:relative;width:108px;height:108px;border-radius:14px;background:var(--gris) center/cover no-repeat}
+.mas{position:absolute;right:-6px;bottom:-6px;width:36px;height:36px;border-radius:50%;border:0;background:#fff;color:var(--marca);font:800 22px/1 'Plus Jakarta Sans',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.18);cursor:pointer}
+.sinfoto .mas{position:static;align-self:center}
+.cant{position:absolute;left:-6px;top:-6px;min-width:26px;height:26px;padding:0 7px;border-radius:999px;background:var(--marca);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center}
+.sinfoto .cant{position:static}
+.barra{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,0),#fff 35%);z-index:6}
+.barra button{display:flex;width:100%;max-width:528px;margin:0 auto;align-items:center;justify-content:space-between;gap:10px;border:0;border-radius:16px;padding:16px 18px;background:var(--marca);color:#fff;font:700 16px 'Plus Jakarta Sans',sans-serif;box-shadow:0 10px 24px rgba(0,0,0,.18);cursor:pointer}
+.barra .num{background:rgba(255,255,255,.22);border-radius:8px;padding:2px 9px}
+.hoja{position:fixed;inset:0;z-index:10;display:none;background:rgba(20,17,15,.45)}
+.hoja.abierta{display:block}
+.panel{position:absolute;left:0;right:0;bottom:0;max-height:94vh;overflow:auto;background:#fff;border-radius:22px 22px 0 0;padding:10px 18px 24px;max-width:560px;margin:0 auto}
+.panel .asa{width:40px;height:5px;border-radius:9px;background:#ddd;margin:2px auto 12px}
+.panel h3{margin:0 0 10px;font-size:20px;font-weight:800}
+.linea{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--linea);font-size:14.5px}
+.linea b{font-weight:700}
+.modo{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--gris);padding:5px;border-radius:14px;margin:16px 0 6px}
+.modo label{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;color:var(--suave)}
+.modo input,.pagos input{position:absolute;opacity:0;pointer-events:none}
+.modo input:checked+label{background:#fff;color:var(--tinta);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.campo{display:block;margin-top:12px;font-size:12.5px;font-weight:700;color:var(--suave)}
+.campo input,.campo textarea{display:block;width:100%;margin-top:6px;padding:13px 14px;border:1.5px solid var(--linea);border-radius:12px;font:500 15px 'Plus Jakarta Sans',sans-serif;color:var(--tinta);background:#fff}
+.pagos{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pagos label{padding:9px 14px;border:1.5px solid var(--linea);border-radius:999px;font-weight:700;font-size:14px;cursor:pointer}
+.pagos input:checked+label{border-color:var(--tinta);background:var(--tinta);color:#fff}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 12px;font-size:15px}
+.total b{font-size:22px;font-weight:800}
+.enviar{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;padding:16px;background:var(--wa);color:#fff;font:800 16px 'Plus Jakarta Sans',sans-serif;text-decoration:none}
+.nota{color:var(--suave);font-size:12.5px;text-align:center;margin-top:10px}
+.chat{margin-top:22px;border-radius:16px;overflow:hidden;border:1px solid var(--linea)}
+.chat .cab{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#075e54;color:#fff;font-weight:700;font-size:14px}
+.chat .cab i{width:30px;height:30px;border-radius:50%;background:#dfe5e7;color:#54656f;display:grid;place-items:center;font-style:normal;font-size:13px}
+.chat .cab small{display:block;font-weight:500;font-size:11.5px;opacity:.8}
+.chat .cuerpo{padding:14px 12px 16px;background:#efe7dd}
+.burbuja{max-width:90%;background:#fff;border-radius:2px 10px 10px 10px;padding:9px 11px;font-size:13.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.burbuja .h{display:block;text-align:right;font-size:11px;color:#8696a0;margin-top:4px}
+.titulochat{font-size:12.5px;font-weight:700;color:var(--suave);margin:20px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.pie{color:#a8a29c;font-size:11.5px;text-align:center;padding:26px 18px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="portada" id="portada"><div class="logo" id="logo"></div></header>
+  <div class="info">
+    <h1 id="nombre"></h1>
+    <p class="tipo" id="tipo"></p>
+    <div class="datos" id="datos"></div>
+  </div>
+  <nav class="cats" id="cats"></nav>
+  <main id="carta"></main>
+  <p class="pie" id="pie"></p>
+</div>
+<div class="barra" id="barra" hidden><button type="button" id="ver"><span class="num" id="num"></span><span>Ver pedido</span><span id="sub"></span></button></div>
+<div class="hoja" id="hoja">
+  <div class="panel">
+    <div class="asa"></div>
+    <h3>Tu pedido</h3>
+    <div id="lineas"></div>
+    <div class="modo" id="modos"></div>
+    <label class="campo">Nombre<input id="cliente" autocomplete="name" placeholder="¿A nombre de quién?"></label>
+    <label class="campo" id="campo-dir">Dirección y barrio<input id="dir" autocomplete="street-address" placeholder="Calle, número, barrio"></label>
+    <label class="campo">Indicaciones<textarea id="obs" rows="2" placeholder="Sin cebolla, torre 2, apto 301…"></textarea></label>
+    <div class="campo">¿Cómo pagas?<div class="pagos" id="pagos"></div></div>
+    <div class="total"><span id="tlabel">Total</span><b id="total"></b></div>
+    <a class="enviar" id="enviar" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+    <p class="nota" id="nota"></p>
+    <div id="vista" hidden>
+      <p class="titulochat" id="tchat"></p>
+      <div class="chat"><div class="cab"><i id="mini"></i><span><span id="cabnom"></span><small>Pedido desde la página</small></span></div><div class="cuerpo"><div class="burbuja" id="burbuja"></div></div></div>
+    </div>
+  </div>
+</div>
+<script>
+const N={"nombre": "Iki Sushi & Poke", "tipo": "Sushi, makis y pokes · Cra 29 #47-14, Sotomayor", "horario": "12:00 a 2:30 p. m. · 6:00 a 10:00 p. m.", "extras": ["Vie a dom 12:00 a 10:30 p. m."], "color": "#b91c1c", "whatsapp": "573150668089", "demo": true, "recoger": "Cra 29 #47-14, Sotomayor", "pagos": ["Efectivo", "Nequi", "Transferencia", "Datáfono al recibir"], "pie": "Página de muestra preparada para Iki Sushi & Poke por Jair, estudiante de la UIS, con su carta y precios. Pruébela: el pedido llega a su WhatsApp.", "carta": [{"categoria": "Makis tradicionales", "platos": [{"nombre": "Philadelphia", "detalle": "Maki fresco de salmón, aguacate y queso philadelphia, con mix de ajonjolí.", "precio": 43000}, {"nombre": "California", "detalle": "Maki fresco de cangrejo, aguacate, pepino y philadelphia, con masago y ajonjolí.", "precio": 43000}, {"nombre": "Dinamita Especial", "detalle": "Maki fresco de cangrejo, aguacate y philadelphia, con kanikama, masago y spicy mayo.", "precio": 45000}, {"nombre": "Alaska", "detalle": "Maki fresco de salmón, aguacate, cangrejo y philadelphia.", "precio": 44000}, {"nombre": "Veggie", "detalle": "Maki fresco de philadelphia, vegetales kakiage y aguacate, con wakame.", "precio": 35000}]}, {"categoria": "Makis tempura", "platos": [{"nombre": "Pacific", "detalle": "Maki crunch de atún, maduro y queso crema, con camarones, spicy mayo y anguila.", "precio": 47000}, {"nombre": "Tiger", "detalle": "Maki crunch de masago, queso crema, aguacate y salmón, con salsa anguila.", "precio": 46000}, {"nombre": "Osaka", "detalle": "Maki crunch de kanikama, queso crema, aguacate y pepino, con tartar de salmón.", "precio": 45000}, {"nombre": "Tánpiko", "detalle": "Maki crunch de camarón apanado en coco o panko, con kanikama en salsa tampico.", "precio": 44000}, {"nombre": "Tropical", "detalle": "Maki crunch de tilapia apanada, cremoso de maracuyá y palmito crocante.", "precio": 44000}]}, {"categoria": "Home makis", "platos": [{"nombre": "Tsurai Iki", "detalle": "Salmón, kanikama crunch, aguacate, maduro y philadelphia, con camarón tempura. Top Sushi Máster 2025.", "precio": 46000}, {"nombre": "Euphoria", "detalle": "Salmón, aguacate y philadelphia, con camarones tempura y spicy mayo. Sushi Máster 2023.", "precio": 45000}, {"nombre": "Bica Roll Especial", "detalle": "Langostino tempura, philadelphia y atún, con atún flameado y aguacate.", "precio": 46000}, {"nombre": "Kyoto", "detalle": "Langostino y aguacate, con salmón flameado y dip de queso.", "precio": 44000}, {"nombre": "Colombian", "detalle": "Salmón, kanikama y philadelphia, con tajadas de maduro y salsa tampico.", "precio": 38000}]}, {"categoria": "Special makis", "platos": [{"nombre": "Depredaroll", "detalle": "Camarón tempura, aguacate, masago y philadelphia, con pulpo y camarón en crema blanca.", "precio": 51000}, {"nombre": "Dragón", "detalle": "Langostinos, anguila y philadelphia, con aguacate, kanikama y spicy mayo.", "precio": 51000}, {"nombre": "Spicy Kani", "detalle": "Salmón al panko, philadelphia y aguacate, con kanikama picante y masago.", "precio": 50000}, {"nombre": "Sashimi Roll", "detalle": "Atún, salmón y philadelphia, coronado con salmón, atún, masago y togarashi.", "precio": 60000}]}, {"categoria": "Entradas", "platos": [{"nombre": "Gyozas", "detalle": "5 gyozas: salmón y atún, cerdo o veggie.", "precio": 25000}, {"nombre": "Piza Iki", "detalle": "8 bocados de arroz crujiente con salmón, atún, aguacate, spicy mayo y anguila.", "precio": 37000}, {"nombre": "Crispy Rice", "detalle": "4 croquetas de arroz en panko con tartar de salmón y spicy mayo.", "precio": 33000}, {"nombre": "Ebi Tempura", "detalle": "Langostinos tempurados en panko con salsa tsurai o spicy mayo.", "precio": 38000}, {"nombre": "Ceviche de la Casa", "detalle": "Pulpo, camarones y pescado blanco en leche de tigre, con aguacate.", "precio": 42000}]}, {"categoria": "Pokes", "platos": [{"nombre": "Poke Honolulu", "detalle": "Base mixta, salmón en ponzu, repollo morado, mango, edamames, wakame y aguacate.", "precio": 44000}, {"nombre": "Poke Acevichado", "detalle": "Base mixta, ceviche de camarones con leche de tigre, aguacate y tostón.", "precio": 45000}, {"nombre": "Iki Poke Grande Especial", "detalle": "Salmón y atún dinamita, aguacate, edamames, wakame y langostinos tempura.", "precio": 60000}]}, {"categoria": "Combos", "platos": [{"nombre": "Combo Puente 3 + 3", "detalle": "3 sushis y 3 nigiris.", "precio": 160000}, {"nombre": "Combo Barco 4 + 4", "detalle": "4 sushis y 4 nigiris.", "precio": 210000}, {"nombre": "Combo Barco 6 + 6", "detalle": "6 sushis y 6 nigiris.", "precio": 310000}]}]};
+const $=id=>document.getElementById(id);
+const pesos=n=>'$'+n.toLocaleString('es-CO');
+const cant={};
+const platos=N.carta.flatMap((c,i)=>c.platos.map((p,j)=>({...p,k:i+'-'+j})));
+document.title=N.nombre+' · Pedidos';
+if(N.portada)$('portada').style.backgroundImage=`url(${N.portada})`;
+if(N.logo)$('logo').style.backgroundImage=`url(${N.logo})`;else $('logo').hidden=true;
+$('nombre').textContent=N.nombre;
+$('tipo').textContent=N.tipo||'';
+$('datos').innerHTML=[N.horario&&`<span class="abierto">● ${N.horario}</span>`,N.recoger?'<span>Domicilio y para recoger</span>':'<span>Domicilio</span>',...(N.extras||[]).map(x=>`<span>${x}</span>`)].filter(Boolean).join('');
+$('cats').innerHTML=N.carta.map((c,i)=>`<a href="#c${i}">${c.categoria}</a>`).join('');
+$('carta').innerHTML=N.carta.map((c,i)=>`<section id="c${i}"><h2>${c.categoria}</h2>${c.platos.map((p,j)=>`<div class="plato${p.foto?'':' sinfoto'}"><div><div class="n">${p.nombre}</div>${p.detalle?`<div class="d">${p.detalle}</div>`:''}<div class="p">${pesos(p.precio)}</div></div>${p.foto?`<div class="foto" style="background-image:url(${p.foto})"><span class="cant" id="q${i}-${j}" hidden></span><button class="mas" data-k="${i}-${j}" aria-label="Agregar ${p.nombre}">+</button></div>`:`<div style="display:flex;gap:8px;align-items:center"><span class="cant" id="q${i}-${j}" hidden></span><button class="mas" data-k="${i}-${j}" aria-label="Agregar ${p.nombre}">+</button></div>`}</div>`).join('')}</section>`).join('');
+$('modos').innerHTML=N.recoger?['Domicilio','Recoger'].map((m,i)=>`<input type="radio" name="modo" id="m${i}" value="${m}"${i?'':' checked'}><label for="m${i}">${m}</label>`).join(''):'';
+if(!N.recoger)$('modos').hidden=true;
+$('pagos').innerHTML=(N.pagos||['Efectivo','Nequi']).map((p,i)=>`<input type="radio" name="pago" id="p${i}" value="${p}"${i?'':' checked'}><label for="p${i}">${p}</label>`).join('');
+$('pie').textContent=N.pie||'';
+if(N.demo){$('vista').hidden=false;$('tchat').textContent='Así le llega a '+N.nombre}
+function pintar(){
+  const el=platos.filter(p=>cant[p.k]>0);
+  const total=el.reduce((s,p)=>s+p.precio*cant[p.k],0);
+  const u=el.reduce((s,p)=>s+cant[p.k],0);
+  platos.forEach(p=>{const q=$('q'+p.k);q.hidden=!cant[p.k];q.textContent=cant[p.k]||''});
+  $('barra').hidden=!u;$('num').textContent=u;$('sub').textContent=pesos(total);
+  $('lineas').innerHTML=el.map(p=>`<div class="linea"><span>${cant[p.k]} × ${p.nombre}</span><b>${pesos(p.precio*cant[p.k])}</b></div>`).join('');
+  const recoge=document.querySelector('input[name="modo"]:checked')?.value==='Recoger';
+  $('campo-dir').hidden=recoge;
+  $('total').textContent=pesos(total);$('tlabel').textContent=recoge?'Total':'Total + domicilio';
+  $('nota').textContent=recoge?'Lo recoges en '+N.recoger:(N.domicilio||'El valor del domicilio se confirma por WhatsApp.');
+  const v=id=>$(id).value.trim();
+  const pago=document.querySelector('input[name="pago"]:checked').value;
+  const txt=[`*Nuevo pedido · ${N.nombre}*`,'',...el.map(p=>`${cant[p.k]} × ${p.nombre} — ${pesos(p.precio*cant[p.k])}`),'',`*Total: ${pesos(total)}*${recoge?'':' + domicilio'}`,`Pago: ${pago}`,recoge?'Para recoger':'A domicilio','',`Nombre: ${v('cliente')||'—'}`,recoge?'':`Dirección: ${v('dir')||'—'}`,v('obs')?`Indicaciones: ${v('obs')}`:''].filter((x,i,a)=>x!==''||a[i-1]!=='').join('\n').trim();
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  $('burbuja').innerHTML=esc(txt).replace(/\*([^*\n]+)\*/g,'<b>$1</b>')+'<span class="h">8:14 p. m.</span>';
+  const cli=v('cliente')||'Cliente';$('cabnom').textContent=cli;$('mini').textContent=cli[0].toUpperCase();
+  $('enviar').href=`https://wa.me/${N.whatsapp||''}?text=`+encodeURIComponent(txt);
+}
+document.addEventListener('click',e=>{const b=e.target.closest('.mas');if(b){cant[b.dataset.k]=(cant[b.dataset.k]||0)+1;pintar()}});
+$('ver').onclick=()=>$('hoja').classList.add('abierta');
+$('hoja').onclick=e=>{if(e.target.id==='hoja')$('hoja').classList.remove('abierta')};
+document.addEventListener('input',pintar);document.addEventListener('change',pintar);
+pintar();
+</script>
+</body>
+</html>

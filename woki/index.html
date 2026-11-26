@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Woki · Pedidos por WhatsApp</title>
+<meta property="og:title" content="Woki · Pedidos por WhatsApp">
+<meta property="og:description" content="Escoja de la carta y el pedido llega completo a WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--marca:#9a3412;--tinta:#14110f;--suave:#6f6a64;--linea:#ece9e4;--fondo:#ffffff;--gris:#f6f4f1;--wa:#1faa59}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--fondo);color:var(--tinta);font:15px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block}
+.app{max-width:560px;margin:0 auto;padding-bottom:110px}
+.portada{position:relative;height:190px;background:var(--marca) center/cover no-repeat}
+.portada::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.35))}
+.logo{position:absolute;left:18px;bottom:-34px;width:78px;height:78px;border-radius:50%;border:4px solid #fff;background:#fff center/cover no-repeat;box-shadow:0 6px 18px rgba(0,0,0,.18);z-index:1}
+.info{padding:44px 18px 6px}
+.info h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.info .tipo{margin:4px 0 12px;color:var(--suave);font-size:14px}
+.datos{display:flex;flex-wrap:wrap;gap:8px}
+.datos span{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:999px;background:var(--gris)}
+.datos .abierto{color:#137a3b;background:#e9f7ee}
+.cats{position:sticky;top:0;z-index:5;display:flex;gap:22px;overflow-x:auto;padding:14px 18px 0;background:#fff;border-bottom:1px solid var(--linea);scrollbar-width:none;margin-top:16px}
+.cats a{flex:0 0 auto;padding-bottom:12px;color:var(--suave);font-weight:700;font-size:14px;text-decoration:none;border-bottom:3px solid transparent}
+.cats a:first-child{color:var(--tinta);border-color:var(--marca)}
+section{padding:6px 18px 4px}
+section h2{font-size:19px;font-weight:800;margin:20px 0 4px;letter-spacing:-.01em}
+.plato{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:14px;padding:16px 0;border-bottom:1px solid var(--linea)}
+.plato.sinfoto{grid-template-columns:minmax(0,1fr) auto}
+.plato .n{font-weight:700;font-size:15.5px}
+.plato .d{color:var(--suave);font-size:13px;margin:3px 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.plato .p{font-weight:700;font-size:15px}
+.foto{position:relative;width:108px;height:108px;border-radius:14px;background:var(--gris) center/cover no-repeat}
+.mas{position:absolute;right:-6px;bottom:-6px;width:36px;height:36px;border-radius:50%;border:0;background:#fff;color:var(--marca);font:800 22px/1 'Plus Jakarta Sans',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.18);cursor:pointer}
+.sinfoto .mas{position:static;align-self:center}
+.cant{position:absolute;left:-6px;top:-6px;min-width:26px;height:26px;padding:0 7px;border-radius:999px;background:var(--marca);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center}
+.sinfoto .cant{position:static}
+.barra{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,0),#fff 35%);z-index:6}
+.barra button{display:flex;width:100%;max-width:528px;margin:0 auto;align-items:center;justify-content:space-between;gap:10px;border:0;border-radius:16px;padding:16px 18px;background:var(--marca);color:#fff;font:700 16px 'Plus Jakarta Sans',sans-serif;box-shadow:0 10px 24px rgba(0,0,0,.18);cursor:pointer}
+.barra .num{background:rgba(255,255,255,.22);border-radius:8px;padding:2px 9px}
+.hoja{position:fixed;inset:0;z-index:10;display:none;background:rgba(20,17,15,.45)}
+.hoja.abierta{display:block}
+.panel{position:absolute;left:0;right:0;bottom:0;max-height:94vh;overflow:auto;background:#fff;border-radius:22px 22px 0 0;padding:10px 18px 24px;max-width:560px;margin:0 auto}
+.panel .asa{width:40px;height:5px;border-radius:9px;background:#ddd;margin:2px auto 12px}
+.panel h3{margin:0 0 10px;font-size:20px;font-weight:800}
+.linea{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--linea);font-size:14.5px}
+.linea b{font-weight:700}
+.modo{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--gris);padding:5px;border-radius:14px;margin:16px 0 6px}
+.modo label{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;color:var(--suave)}
+.modo input,.pagos input{position:absolute;opacity:0;pointer-events:none}
+.modo input:checked+label{background:#fff;color:var(--tinta);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.campo{display:block;margin-top:12px;font-size:12.5px;font-weight:700;color:var(--suave)}
+.campo input,.campo textarea{display:block;width:100%;margin-top:6px;padding:13px 14px;border:1.5px solid var(--linea);border-radius:12px;font:500 15px 'Plus Jakarta Sans',sans-serif;color:var(--tinta);background:#fff}
+.pagos{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pagos label{padding:9px 14px;border:1.5px solid var(--linea);border-radius:999px;font-weight:700;font-size:14px;cursor:pointer}
+.pagos input:checked+label{border-color:var(--tinta);background:var(--tinta);color:#fff}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 12px;font-size:15px}
+.total b{font-size:22px;font-weight:800}
+.enviar{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;padding:16px;background:var(--wa);color:#fff;font:800 16px 'Plus Jakarta Sans',sans-serif;text-decoration:none}
+.nota{color:var(--suave);font-size:12.5px;text-align:center;margin-top:10px}
+.chat{margin-top:22px;border-radius:16px;overflow:hidden;border:1px solid var(--linea)}
+.chat .cab{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#075e54;color:#fff;font-weight:700;font-size:14px}
+.chat .cab i{width:30px;height:30px;border-radius:50%;background:#dfe5e7;color:#54656f;display:grid;place-items:center;font-style:normal;font-size:13px}
+.chat .cab small{display:block;font-weight:500;font-size:11.5px;opacity:.8}
+.chat .cuerpo{padding:14px 12px 16px;background:#efe7dd}
+.burbuja{max-width:90%;background:#fff;border-radius:2px 10px 10px 10px;padding:9px 11px;font-size:13.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.burbuja .h{display:block;text-align:right;font-size:11px;color:#8696a0;margin-top:4px}
+.titulochat{font-size:12.5px;font-weight:700;color:var(--suave);margin:20px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.pie{color:#a8a29c;font-size:11.5px;text-align:center;padding:26px 18px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="portada" id="portada"><div class="logo" id="logo"></div></header>
+  <div class="info">
+    <h1 id="nombre"></h1>
+    <p class="tipo" id="tipo"></p>
+    <div class="datos" id="datos"></div>
+  </div>
+  <nav class="cats" id="cats"></nav>
+  <main id="carta"></main>
+  <p class="pie" id="pie"></p>
+</div>
+<div class="barra" id="barra" hidden><button type="button" id="ver"><span class="num" id="num"></span><span>Ver pedido</span><span id="sub"></span></button></div>
+<div class="hoja" id="hoja">
+  <div class="panel">
+    <div class="asa"></div>
+    <h3>Tu pedido</h3>
+    <div id="lineas"></div>
+    <div class="modo" id="modos"></div>
+    <label class="campo">Nombre<input id="cliente" autocomplete="name" placeholder="¿A nombre de quién?"></label>
+    <label class="campo" id="campo-dir">Dirección y barrio<input id="dir" autocomplete="street-address" placeholder="Calle, número, barrio"></label>
+    <label class="campo">Indicaciones<textarea id="obs" rows="2" placeholder="Sin cebolla, torre 2, apto 301…"></textarea></label>
+    <div class="campo">¿Cómo pagas?<div class="pagos" id="pagos"></div></div>
+    <div class="total"><span id="tlabel">Total</span><b id="total"></b></div>
+    <a class="enviar" id="enviar" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+    <p class="nota" id="nota"></p>
+    <div id="vista" hidden>
+      <p class="titulochat" id="tchat"></p>
+      <div class="chat"><div class="cab"><i id="mini"></i><span><span id="cabnom"></span><small>Pedido desde la página</small></span></div><div class="cuerpo"><div class="burbuja" id="burbuja"></div></div></div>
+    </div>
+  </div>
+</div>
+<script>
+const N={"nombre": "Woki", "tipo": "Fusión oriental: wok, teppanyaki y sushi · Bucaramanga", "horario": "Mar a dom · 12:00 a 3:00 p. m. y 6:00 a 10:00 p. m.", "extras": ["Lunes cerrado"], "color": "#9a3412", "whatsapp": "573134123939", "demo": true, "recoger": "Cra 34 #54-133, Bucaramanga", "pagos": ["Efectivo", "Nequi", "Transferencia"], "pie": "Página de muestra preparada para Woki por Jair, estudiante de la UIS, con su menú Volumen 5. Pruébela: el pedido llega a su WhatsApp.", "carta": [{"categoria": "Más pedidos", "platos": [{"nombre": "Arroz Woki", "detalle": "Arroz al wok con raíces chinas, pollo, cerdo, camarones y calamar, con toque de togarashi.", "precio": 45800}, {"nombre": "Pad Thai", "detalle": "Tallarines de arroz en salsa de tamarindo con pollo y camarones, tortilla de huevo, maní y limón.", "precio": 44800}, {"nombre": "Ramen de Panceta", "detalle": "Fondo de cerdo y soya, fideos, panceta flameada, champiñones, huevo marinado y nori.", "precio": 44800}, {"nombre": "Baos Pork Belly", "detalle": "2 pancitos al vapor con panceta en salsa tonkatsu, cherry confitados y queso flameado.", "precio": 31900}, {"nombre": "Katana Roll", "detalle": "Plátano, langostino apanado y queso crema, con tartar de tocineta y queso flameado. 10 bocados.", "precio": 41900}]}, {"categoria": "Entradas y street food", "platos": [{"nombre": "Gyozas", "detalle": "5 empanaditas al vapor con carne o cerdo, ajo, soya y ajonjolí.", "precio": 24800}, {"nombre": "Ebi Dinamita", "detalle": "5 rollitos de maduro con camarones tempura, tartar de tocineta y salsa dinamita.", "precio": 33900}, {"nombre": "Montadito de Salmón", "detalle": "Arroz crujiente con queso crema, tartar de salmón, aguacate y mermelada de pimentón.", "precio": 34900}, {"nombre": "Orion Fries", "detalle": "Papas con pollo en panko, kanikama, aguacate, wakame y salsa dinamita.", "precio": 38800}, {"nombre": "Camarón Crunch", "detalle": "Papas con mayonesa japonesa, camarones en panko, tartar de tocineta y queso flameado.", "precio": 40800}]}, {"categoria": "Sushi (10 bocados)", "platos": [{"nombre": "Philadelphia Roll", "detalle": "Salmón, queso crema y aguacate con ajonjolí mixto.", "precio": 39900}, {"nombre": "Oishi Roll", "detalle": "Salmón, aguacate y queso crema, con tartar de atún en teriyaki.", "precio": 44900}, {"nombre": "Ojo de Tigre Especial", "detalle": "Queso crema con pupila de kanikama, atún y salmón, con wakame y masago.", "precio": 44900}, {"nombre": "Caribbean Roll", "detalle": "Camarones en panko, queso crema y mango, con coco tostado y salsa de maracuyá.", "precio": 39900}, {"nombre": "Dragon Roll", "detalle": "Tempurizado de camarones, aguacate, maduro y queso crema, con wakame y kanikama.", "precio": 44900}, {"nombre": "Bombastik", "detalle": "Tempurizado de piel de salmón crujiente, queso crema y mango, con tartar de salmón.", "precio": 43900}]}, {"categoria": "Teppanyaki y arroces", "platos": [{"nombre": "Costillas Tokyo-Seoul", "detalle": "Costillas de cerdo en cocción lenta con glaseado de jengibre, miso y miel.", "precio": 65900}, {"nombre": "Mariscos del Sol Naciente", "detalle": "Gambas, camarones, mejillones y calamar en salsa especial con chimichurri japonés.", "precio": 59900}, {"nombre": "Cerdo Nippon", "detalle": "Cerdo en salsa agridulce de tamarindo y miso, con yakimeshi y vegetales.", "precio": 54900}, {"nombre": "Cremoso Marinero", "detalle": "Arroz de mariscos al wok en crema de coco con toque de curry.", "precio": 47800}, {"nombre": "Arroz Tres Delicias", "detalle": "Arroz criollo con carne, cerdo y pollo, pimentón y maduro en cubitos.", "precio": 42900}]}, {"categoria": "Para compartir", "platos": [{"nombre": "El Tigre & El Dragón", "detalle": "10 bocados de Ojo de Tigre + 10 de Dragon Roll.", "precio": 77900}, {"nombre": "Woki Party", "detalle": "5 Caribbean + 5 Philadelphia + 5 Bombastik + 5 Ebi Roll.", "precio": 82900}, {"nombre": "Bento Costillas", "detalle": "½ Philadelphia, costillas fusión, 4 langostinos crunchy, yakimeshi y wonton.", "precio": 88900}]}]};
+const $=id=>document.getElementById(id);
+const pesos=n=>'$'+n.toLocaleString('es-CO');
+const cant={};
+const platos=N.carta.flatMap((c,i)=>c.platos.map((p,j)=>({...p,k:i+'-'+j})));
+document.title=N.nombre+' · Pedidos';
+if(N.portada)$('portada').style.backgroundImage=`url(${N.portada})`;
+if(N.logo)$('logo').style.backgroundImage=`url(${N.logo})`;else $('logo').hidden=true;
+$('nombre').textContent=N.nombre;
+$('tipo').textContent=N.tipo||'';
+$('datos').innerHTML=[N.horario&&`<span class="abierto">● ${N.horario}</span>`,N.recoger?'<span>Domicilio y para recoger</span>':'<span>Domicilio</span>',...(N.extras||[]).map(x=>`<span>${x}</span>`)].filter(Boolean).join('');
+$('cats').innerHTML=N.carta.map((c,i)=>`<a href="#c${i}">${c.categoria}</a>`).join('');
+$('carta').innerHTML=N.carta.map((c,i)=>`<section id="c${i}"><h2>${c.categoria}</h2>${c.platos.map((p,j)=>`<div class="plato${p.foto?'':' sinfoto'}"><div><div class="n">${p.nombre}</div>${p.detalle?`<div class="d">${p.detalle}</div>`:''}<div class="p">${pesos(p.precio)}</div></div>${p.foto?`<div class="foto" style="background-image:url(${p.foto})"><span class="cant" id="q${i}-${j}" hidden></span><button class="mas" data-k="${i}-${j}" aria-label="Agregar ${p.nombre}">+</button></div>`:`<div style="display:flex;gap:8px;align-items:center"><span class="cant" id="q${i}-${j}" hidden></span><button class="mas" data-k="${i}-${j}" aria-label="Agregar ${p.nombre}">+</button></div>`}</div>`).join('')}</section>`).join('');
+$('modos').innerHTML=N.recoger?['Domicilio','Recoger'].map((m,i)=>`<input type="radio" name="modo" id="m${i}" value="${m}"${i?'':' checked'}><label for="m${i}">${m}</label>`).join(''):'';
+if(!N.recoger)$('modos').hidden=true;
+$('pagos').innerHTML=(N.pagos||['Efectivo','Nequi']).map((p,i)=>`<input type="radio" name="pago" id="p${i}" value="${p}"${i?'':' checked'}><label for="p${i}">${p}</label>`).join('');
+$('pie').textContent=N.pie||'';
+if(N.demo){$('vista').hidden=false;$('tchat').textContent='Así le llega a '+N.nombre}
+function pintar(){
+  const el=platos.filter(p=>cant[p.k]>0);
+  const total=el.reduce((s,p)=>s+p.precio*cant[p.k],0);
+  const u=el.reduce((s,p)=>s+cant[p.k],0);
+  platos.forEach(p=>{const q=$('q'+p.k);q.hidden=!cant[p.k];q.textContent=cant[p.k]||''});
+  $('barra').hidden=!u;$('num').textContent=u;$('sub').textContent=pesos(total);
+  $('lineas').innerHTML=el.map(p=>`<div class="linea"><span>${cant[p.k]} × ${p.nombre}</span><b>${pesos(p.precio*cant[p.k])}</b></div>`).join('');
+  const recoge=document.querySelector('input[name="modo"]:checked')?.value==='Recoger';
+  $('campo-dir').hidden=recoge;
+  $('total').textContent=pesos(total);$('tlabel').textContent=recoge?'Total':'Total + domicilio';
+  $('nota').textContent=recoge?'Lo recoges en '+N.recoger:(N.domicilio||'El valor del domicilio se confirma por WhatsApp.');
+  const v=id=>$(id).value.trim();
+  const pago=document.querySelector('input[name="pago"]:checked').value;
+  const txt=[`*Nuevo pedido · ${N.nombre}*`,'',...el.map(p=>`${cant[p.k]} × ${p.nombre} — ${pesos(p.precio*cant[p.k])}`),'',`*Total: ${pesos(total)}*${recoge?'':' + domicilio'}`,`Pago: ${pago}`,recoge?'Para recoger':'A domicilio','',`Nombre: ${v('cliente')||'—'}`,recoge?'':`Dirección: ${v('dir')||'—'}`,v('obs')?`Indicaciones: ${v('obs')}`:''].filter((x,i,a)=>x!==''||a[i-1]!=='').join('\n').trim();
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  $('burbuja').innerHTML=esc(txt).replace(/\*([^*\n]+)\*/g,'<b>$1</b>')+'<span class="h">8:14 p. m.</span>';
+  const cli=v('cliente')||'Cliente';$('cabnom').textContent=cli;$('mini').textContent=cli[0].toUpperCase();
+  $('enviar').href=`https://wa.me/${N.whatsapp||''}?text=`+encodeURIComponent(txt);
+}
+document.addEventListener('click',e=>{const b=e.target.closest('.mas');if(b){cant[b.dataset.k]=(cant[b.dataset.k]||0)+1;pintar()}});
+$('ver').onclick=()=>$('hoja').classList.add('abierta');
+$('hoja').onclick=e=>{if(e.target.id==='hoja')$('hoja').classList.remove('abierta')};
+document.addEventListener('input',pintar);document.addEventListener('change',pintar);
+pintar();
+</script>
+</body>
+</html>
